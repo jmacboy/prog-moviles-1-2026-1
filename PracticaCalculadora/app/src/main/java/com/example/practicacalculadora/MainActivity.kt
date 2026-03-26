@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.practicacalculadora.StyledButton
 import com.example.practicacalculadora.ui.theme.PracticaCalculadoraTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,6 +51,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
     var result by remember { mutableStateOf("") }
     var prevNumber by remember { mutableIntStateOf(0) }
     var currentOperation by remember { mutableStateOf("") }
+    var memoryResult: Int? by remember { mutableStateOf(null) }
     val context = LocalContext.current
     Column(
         modifier = modifier
@@ -62,6 +63,24 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
             fontSize = 40.sp,
             textAlign = TextAlign.End,
             modifier = Modifier.fillMaxWidth()
+        )
+
+        MemoryPanel(
+            onMemoryPlusClick = {
+                memoryResult = (memoryResult ?: 0) + (result.toIntOrNull() ?: 0)
+                result = ""
+            },
+            onMemoryMinusClick = {
+                memoryResult = (memoryResult ?: 0) - (result.toIntOrNull() ?: 0)
+                result = ""
+            },
+            onMemoryRecallClick = {
+                result = memoryResult.toString()
+            },
+            onMemoryClearClick = {
+                memoryResult = null
+            },
+            memoryResult
         )
         NumbersPanel(onNumberClick = {
             // el valor recibido dentro de una función lambda siempre se llama it
@@ -113,10 +132,41 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RowScope.StyledButton(onClick: () -> Unit, text: String) {
+fun MemoryPanel(
+    onMemoryPlusClick: () -> Unit,
+    onMemoryMinusClick: () -> Unit,
+    onMemoryRecallClick: () -> Unit,
+    onMemoryClearClick: () -> Unit,
+    memoryValue: Int?
+) {
+    Row {
+        StyledButton(
+            onClick = { onMemoryClearClick() },
+            "MC",
+            enabled = memoryValue != null
+        )
+        StyledButton(
+            onClick = { onMemoryRecallClick() },
+            "MR",
+            enabled = memoryValue != null
+        )
+        StyledButton(
+            onClick = { onMemoryPlusClick() },
+            "M+"
+        )
+        StyledButton(
+            onClick = { onMemoryMinusClick() },
+            "M-"
+        )
+    }
+}
+
+@Composable
+fun RowScope.StyledButton(onClick: () -> Unit, text: String, enabled: Boolean = true) {
     Button(
         onClick = onClick,
-        modifier = Modifier.weight(1f)
+        modifier = Modifier.weight(1f),
+        enabled = enabled
     ) {
         Text(text, fontSize = 30.sp)
     }
@@ -244,7 +294,66 @@ fun NumbersPanel(onNumberClick: (String) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun StyledButtonPreview() {
+    PracticaCalculadoraTheme {
+        Row {
+            StyledButton(onClick = {}, text = "1")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NumbersPanelPreview() {
+    PracticaCalculadoraTheme {
+        Column {
+            NumbersPanel(onNumberClick = {})
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OperationsPanelPreview() {
+    PracticaCalculadoraTheme {
+        Column {
+            OperationsPanel(
+                startOperation = {},
+                doOperation = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ClearOperationsPreview() {
+    PracticaCalculadoraTheme {
+        ClearOperations(
+            onClearEverythingClick = {},
+            onClearOneClick = {},
+            onClearClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MemoryPanelPreview() {
+    PracticaCalculadoraTheme {
+        MemoryPanel(
+            onMemoryPlusClick = {},
+            onMemoryMinusClick = {},
+            onMemoryRecallClick = {},
+            onMemoryClearClick = {},
+            memoryValue = 123
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CalculatorPreview() {
     PracticaCalculadoraTheme {
         CalculatorScreen()
     }
