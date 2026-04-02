@@ -7,25 +7,43 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.practicastateflow.ui.theme.PracticaStateflowTheme
 import com.example.practicastateflow.viewmodels.LoginViewModel
+import com.example.practicastateflow.viewmodels.RegisterViewModel
 import com.example.practicastateflow.views.LoginScreen
+import com.example.practicastateflow.views.RegisterScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
+            var showLogin by remember { mutableStateOf(false) }
             PracticaStateflowTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(
-                        vm = LoginViewModel(),
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    if (showLogin) {
+                        LoginScreen(
+                            vm = LoginViewModel(),
+                            modifier = Modifier.padding(innerPadding),
+                            onNavigateToRegister = {
+                                showLogin = false
+                            }
+                        )
+                    } else {
+                        RegisterScreen(
+                            vm = RegisterViewModel(),
+                            modifier = Modifier.padding(innerPadding),
+                            onNavigateToLogin = {
+                                showLogin = true
+                            }
+                        )
+                    }
                 }
             }
         }
