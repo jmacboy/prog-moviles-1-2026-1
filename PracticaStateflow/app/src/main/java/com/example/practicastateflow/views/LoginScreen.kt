@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -44,7 +45,7 @@ fun LoginScreen(vm: LoginViewModel, modifier: Modifier = Modifier) {
             fontSize = 24.sp,
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = state.value.username,
             onValueChange = {
                 vm.updateUsername(it)
@@ -54,7 +55,7 @@ fun LoginScreen(vm: LoginViewModel, modifier: Modifier = Modifier) {
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = state.value.password,
             onValueChange = {
                 vm.updatePassword(it)
