@@ -13,4 +13,14 @@ class PostRepository {
         }
         return emptyList()
     }
+
+    suspend fun getPostById(id: Int): Post? {
+        try {
+            val retrofitInstance = RetrofitInstance.api
+            return retrofitInstance.getPostById(id)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 }

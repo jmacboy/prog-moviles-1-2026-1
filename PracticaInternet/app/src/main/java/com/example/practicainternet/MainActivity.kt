@@ -4,19 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.practicainternet.ui.NavScreens
+import com.example.practicainternet.ui.screens.PostDetailScreen
+import com.example.practicainternet.ui.screens.PostListScreen
 import com.example.practicainternet.ui.theme.PracticaInternetTheme
 import com.example.practicainternet.ui.viewmodels.PostListViewModel
 
@@ -26,24 +22,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PracticaInternetTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PostList(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+                NavigationApp()
             }
         }
     }
 
     @Composable
-    fun PostList(modifier: Modifier = Modifier, vm: PostListViewModel = PostListViewModel()) {
-        val postList by vm.list.collectAsState()
-        LazyColumn(modifier = modifier) {
-            items(postList) { post ->
-                Row {
-                    Text(text = post.id.toString(), modifier = Modifier.padding(8.dp))
-                    Text(text = post.title, modifier = Modifier.padding(8.dp))
-                }
+    fun NavigationApp(
+        navController: NavHostController = rememberNavController(),
+        vm: PostListViewModel = PostListViewModel()
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = NavScreens.HOME.name
+        ) {
+            composable(NavScreens.HOME.name) {
+                PostListScreen(modifier = Modifier, vm, navController)
+            }
+            composable(NavScreens.DETAIL.name ) {
+                PostDetailScreen(vm)
             }
         }
     }
