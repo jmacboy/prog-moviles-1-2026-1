@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.practicainternet"
+    namespace = "com.example.practicaapiviajes"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.practicainternet"
+        applicationId = "com.example.practicaapiviajes"
         minSdk = 30
         targetSdk = 36
         versionCode = 1
@@ -54,9 +54,12 @@ dependencies {
 
     //retrofit converter
     implementation(libs.converter.gson)
-
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

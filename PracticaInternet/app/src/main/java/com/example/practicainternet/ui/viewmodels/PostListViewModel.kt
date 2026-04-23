@@ -2,7 +2,6 @@ package com.example.practicainternet.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.practicainternet.data.models.Post
 import com.example.practicainternet.data.repositories.PostRepository
 import com.example.practicainternet.ui.states.PostListUIModel
 import kotlinx.coroutines.flow.MutableStateFlow
