@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.practicabd.data.entities.Person
+import com.example.practicabd.data.entities.PersonWithPhones
 
 @Dao
 interface PersonDao {
@@ -12,4 +13,7 @@ interface PersonDao {
 
     @Insert()
     suspend fun insertPerson(person: Person)
+
+    @Query("SELECT * FROM Person p WHERE p.id = :personId")
+    suspend fun getPersonWithPhones(personId: Int): PersonWithPhones
 }

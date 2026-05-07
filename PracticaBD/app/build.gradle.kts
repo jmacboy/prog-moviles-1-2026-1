@@ -52,6 +52,7 @@ dependencies {
 
     // Librería Room para la base de datos
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
 
     // Para usar las extensiones de Kotlin Coroutines con Room
